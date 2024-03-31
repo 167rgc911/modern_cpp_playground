@@ -1,0 +1,1 @@
+rm -rf b && CXX=clang++-18 CC=clang-18 LD=lld-18 cmake -S . -B b -DCMAKE_BUILD_TYPE=DEBUG && cd b && make && make test && ctest -T memcheck

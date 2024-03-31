@@ -1,0 +1,1 @@
+rm -rf b && CC=gcc-10 CXX=g++-10 cmake -S . -B b -DCMAKE_BUILD_TYPE=DEBUG && cd b && make && make test && ctest -T memcheck
