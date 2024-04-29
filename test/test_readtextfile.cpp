@@ -40,7 +40,7 @@ main (void)
       std::remove_if (test_string0.begin (), test_string0.end (),
                       [] (unsigned char c) { return std::ispunct (c); }),
       test_string0.end ());
-  std::cout << test_string0 << '\n';
+  /* std::cout << test_string0 << '\n'; */
 
   // input text file -> std::vector
   // can be n .. n + x lines
