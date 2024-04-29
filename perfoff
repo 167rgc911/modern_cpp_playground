@@ -1,0 +1,1 @@
+doas cpupower frequency-set --governor schedutil
