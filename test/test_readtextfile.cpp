@@ -66,6 +66,7 @@ main (void)
                              [] (std::string &s1, std::string &s2) {
                                return s1.length () < s2.length ();
                              });
+  // does not account for other words
   std::cout << "longest word: " << *m << '\n';
 
   return retval;
