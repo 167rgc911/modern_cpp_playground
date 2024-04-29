@@ -23,6 +23,8 @@
 #include <string>
 #include <vector>
 
+#include "LoremIpsumGenerator.hpp"
+
 #include "readtextfile.h"
 
 int
@@ -30,11 +32,8 @@ main (void)
 {
   int retval = 0;
 
-  /* const auto csv_text_ = read_csv_file ("files/colrowhdr.csv", retval); */
-  std::string test_string0
-      = R"(Hello. $100 as-is, distributin'? Government governin.
-One of them is muchmuchmuch bigger than the other)";
-  std::cout << test_string0 << '\n';
+  // generate text
+  std::string test_string0 = lorem_ipsum::generate_lorem_ipsum_lines (24);
 
   // sanitize
   test_string0.erase (
@@ -55,8 +54,12 @@ One of them is muchmuchmuch bigger than the other)";
                                   [] (std::string &s1, std::string &s2) {
                                     return s1.length () < s2.length ();
                                   });
-      ll.push_back (*me);
-      std::cout << *me << '\n';
+      if (me != r_.end ())
+        {
+          ll.push_back (*me);
+          // longest word for each input line
+          std::cout << *me << '\n';
+        }
     }
 
   auto m = std::max_element (ll.begin (), ll.end (),
