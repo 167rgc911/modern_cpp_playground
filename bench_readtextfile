@@ -15,3 +15,15 @@ g++ -g -std=c++20 -Isrc -Iinclude -I$HOME/u/alpine/include test/bench_readtextfi
 #
 # # normal benchmarking run
 # perfon; perfinfo; taskset -c 0,2 ./o/bench; perfoff
+#
+# note 1:
+# sanitization
+# - baseline: perform after reading all the lines
+# - candidate: remove sanitization
+# - result: faster runtimes
+#
+# note 2:
+# sanitization
+# - baseline: perform after reading _all_ the lines
+# - candidate: perform after reading _each_ line
+# - result: slowdown; +30%
