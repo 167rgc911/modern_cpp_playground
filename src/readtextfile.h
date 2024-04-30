@@ -43,7 +43,7 @@ split (const std::string &s, const char delim, int &retval)
 }
 
 std::vector<std::string>
-read_csv_string (const std::string &s, int &retval)
+read_string_lines (const std::string &s, int &retval)
 {
   retval = 0;
 
@@ -51,7 +51,7 @@ read_csv_string (const std::string &s, int &retval)
 }
 
 std::vector<std::string>
-read_csv_file (const std::string &f, int &retval)
+read_text_file (const std::string &f, int &retval)
 {
   retval = 0;
 
@@ -67,7 +67,7 @@ read_csv_file (const std::string &f, int &retval)
       std::string s_ (sz_, '\0');
       ifs_.read (&s_[0], sz_);
 
-      ov = read_csv_string (s_, retval);
+      ov = read_string_lines (s_, retval);
     }
   else
     {

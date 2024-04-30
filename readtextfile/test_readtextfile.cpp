@@ -45,13 +45,13 @@ main (void)
 
   // input text file -> std::vector
   // can be n .. n + x lines
-  const auto csv_text_ = read_csv_string (test_string0, retval);
+  const auto lines_ = read_string_lines (test_string0, retval);
 
   std::vector<std::string> ll;
   auto f = [] (std::string &s1, std::string &s2) {
     return s1.length () < s2.length ();
   };
-  for (const auto &line : csv_text_)
+  for (const auto &line : lines_.get ())
     {
       auto r_ = split (line, ' ', retval);
       auto me = std::max_element (r_.begin (), r_.end (), f);
