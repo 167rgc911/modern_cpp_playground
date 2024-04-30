@@ -48,13 +48,13 @@ main (void)
   const auto csv_text_ = read_csv_string (test_string0, retval);
 
   std::vector<std::string> ll;
+  auto f = [] (std::string &s1, std::string &s2) {
+    return s1.length () < s2.length ();
+  };
   for (const auto &line : csv_text_)
     {
       auto r_ = split (line, ' ', retval);
-      auto me = std::max_element (r_.begin (), r_.end (),
-                                  [] (std::string &s1, std::string &s2) {
-                                    return s1.length () < s2.length ();
-                                  });
+      auto me = std::max_element (r_.begin (), r_.end (), f);
       if (me != r_.end ())
         {
           ll.push_back (*me);
@@ -63,10 +63,7 @@ main (void)
         }
     }
 
-  auto m = std::max_element (ll.begin (), ll.end (),
-                             [] (std::string &s1, std::string &s2) {
-                               return s1.length () < s2.length ();
-                             });
+  auto m = std::max_element (ll.begin (), ll.end (), f);
   // does not account for other words
   std::cout << "longest word: " << *m << '\n';
 
