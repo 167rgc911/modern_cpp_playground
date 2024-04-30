@@ -13,6 +13,7 @@
  *         Author:  rgc (rgc), sessyargc.jp@gmail.com
  *   Organization:
  *
+ * SPDX-License-Identifier: MIT
  * =====================================================================================
  */
 
