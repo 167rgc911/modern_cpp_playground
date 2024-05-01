@@ -45,7 +45,7 @@ main (void)
   if (not lines_.empty ())
     {
 
-      std::vector<std::string> ll;
+      std::vector<std::string> ll {};
       auto f = [] (std::string &s1, std::string &s2) {
         return s1.length () < s2.length ();
       };

@@ -31,7 +31,7 @@ split (std::string &s, const char delim, int &retval)
 {
   retval = 0;
 
-  std::vector<std::string> ov;
+  std::vector<std::string> ov {};
 
   std::istringstream ss_ (s);
   for (std::string l; std::getline (ss_, l, delim);)
@@ -75,7 +75,7 @@ read_text_file (const std::string &f, int &retval)
 {
   retval = 0;
 
-  std::vector<std::string> ov;
+  std::vector<std::string> ov {};
 
   std::ifstream ifs_{ f, std::ios::ate };
   if (ifs_.is_open ())
