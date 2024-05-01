@@ -36,36 +36,49 @@ main (void)
   // generate text
   std::string test_string0 = lorem_ipsum::generate_lorem_ipsum_lines (24);
 
-  // sanitize
-  test_string0.erase (
-      std::remove_if (test_string0.begin (), test_string0.end (),
-                      [] (unsigned char c) { return std::ispunct (c); }),
-      test_string0.end ());
-  /* std::cout << test_string0 << '\n'; */
+  auto input_ = read_string_lines (test_string0, retval);
+  std::vector<std::string> lines_;
+  /* std::future<std::vector<std::string>> lines_ = std::async
+   * (std::launch::async, [&] () { */
+  /*   return read_string_lines (test_string0, retval); */
+  /* }); */
 
-  // input text file -> std::vector
-  // can be n .. n + x lines
-  const auto lines_ = read_string_lines (test_string0, retval);
-
-  std::vector<std::string> ll;
-  auto f = [] (std::string &s1, std::string &s2) {
-    return s1.length () < s2.length ();
-  };
-  for (const auto &line : lines_.get ())
+  try
     {
-      auto r_ = split (line, ' ', retval);
-      auto me = std::max_element (r_.begin (), r_.end (), f);
-      if (me != r_.end ())
-        {
-          ll.push_back (*me);
-          // longest word for each input line
-          std::cout << *me << '\n';
-        }
+      lines_ = input_.value ();
+    }
+  catch (const std::bad_optional_access &e)
+    {
+      std::cout << e.what () << '\n';
     }
 
-  auto m = std::max_element (ll.begin (), ll.end (), f);
-  // does not account for other words
-  std::cout << "longest word: " << *m << '\n';
+  if (not lines_.empty ())
+    {
+
+      std::vector<std::string> ll;
+      auto f = [] (std::string &s1, std::string &s2) {
+        return s1.length () < s2.length ();
+      };
+      for (auto &line : lines_)
+        {
+          auto split_r_ = split (line, ' ', retval);
+          auto r_ = split_r_.value ();
+          auto me = std::max_element (r_.begin (), r_.end (), f);
+          if (me != r_.end ())
+            {
+              ll.push_back (*me);
+              // longest word for each input line
+              std::cout << *me << '\n';
+            }
+        }
+
+      auto m = std::max_element (ll.begin (), ll.end (), f);
+      // does not account for other words
+      if (m != ll.end ())
+        {
+          std::cout << "longest word: " << *m << '\n';
+        }
+    }
 
   return retval;
 }

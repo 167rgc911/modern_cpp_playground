@@ -21,12 +21,13 @@
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <optional>
 #include <sstream>
 #include <string>
 #include <vector>
 
-std::vector<std::string>
-split (const std::string &s, const char delim, int &retval)
+std::optional<std::vector<std::string>>
+split (std::string &s, const char delim, int &retval)
 {
   retval = 0;
 
@@ -42,20 +43,39 @@ split (const std::string &s, const char delim, int &retval)
   return ov;
 }
 
-std::vector<std::string>
-read_string_lines (const std::string &s, int &retval)
+std::optional<std::vector<std::string>>
+read_string_lines (std::string &s, int &retval)
 {
   retval = 0;
 
-  return split (s, '\n', retval);
+  if (not s.empty ())
+    {
+      auto pl_sanitize = [] (unsigned char c) {
+        return (c > 255) or std::ispunct (c)
+               or not(std::isalnum (c) or std::isspace (c));
+      };
+
+      // sanitize
+      s.erase (std::remove_if (s.begin (), s.end (), pl_sanitize), s.end ());
+      if (s.empty ())
+        {
+          retval = 1;
+          return {};
+        }
+
+      return split (s, '\n', retval);
+    }
+
+  retval = 1;
+  return {};
 }
 
-std::vector<std::string>
+std::optional<std::vector<std::string>>
 read_text_file (const std::string &f, int &retval)
 {
   retval = 0;
 
-  std::vector<std::string> ov;
+  std::optional<std::vector<std::string>> ov;
 
   std::ifstream ifs_{ f, std::ios::ate };
   if (ifs_.is_open ())
