@@ -28,25 +28,14 @@ test (std::string test_string0)
 {
   int retval = 0;
 
-  auto input_ = read_string_lines (test_string0, retval);
-  std::vector<std::string> lines_;
-
-  try
-    {
-      lines_ = input_.value ();
-    }
-  catch (const std::bad_optional_access &e)
-    {
-      std::cout << e.what () << '\n';
-    }
+  auto lines_ = read_string_lines (test_string0, retval);
 
   if (not lines_.empty ())
     {
       std::vector<std::string> ll;
       for (auto &line : lines_)
         {
-          auto split_r_ = split (line, ' ', retval);
-          auto r_ = split_r_.value ();
+          auto r_ = split (line, ' ', retval);
           auto me = std::max_element (r_.begin (), r_.end (),
                                       [] (std::string &s1, std::string &s2) {
                                         return s1.length () < s2.length ();
@@ -82,17 +71,7 @@ test_lambda (std::string test_string0)
 {
   int retval = 0;
 
-  auto input_ = read_string_lines (test_string0, retval);
-  std::vector<std::string> lines_;
-
-  try
-    {
-      lines_ = input_.value ();
-    }
-  catch (const std::bad_optional_access &e)
-    {
-      std::cout << e.what () << '\n';
-    }
+  auto lines_ = read_string_lines (test_string0, retval);
 
   if (not lines_.empty ())
     {
@@ -103,8 +82,7 @@ test_lambda (std::string test_string0)
       };
       for (auto &line : lines_)
         {
-          auto split_r_ = split (line, ' ', retval);
-          auto r_ = split_r_.value ();
+          auto r_ = split (line, ' ', retval);
           auto me = std::max_element (r_.begin (), r_.end (), f);
           if (me != r_.end ())
             {

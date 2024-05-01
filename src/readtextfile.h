@@ -26,7 +26,7 @@
 #include <string>
 #include <vector>
 
-std::optional<std::vector<std::string>>
+std::vector<std::string>
 split (std::string &s, const char delim, int &retval)
 {
   retval = 0;
@@ -43,7 +43,7 @@ split (std::string &s, const char delim, int &retval)
   return ov;
 }
 
-std::optional<std::vector<std::string>>
+std::vector<std::string>
 read_string_lines (std::string &s, int &retval)
 {
   retval = 0;
@@ -70,12 +70,12 @@ read_string_lines (std::string &s, int &retval)
   return {};
 }
 
-std::optional<std::vector<std::string>>
+std::vector<std::string>
 read_text_file (const std::string &f, int &retval)
 {
   retval = 0;
 
-  std::optional<std::vector<std::string>> ov;
+  std::vector<std::string> ov;
 
   std::ifstream ifs_{ f, std::ios::ate };
   if (ifs_.is_open ())

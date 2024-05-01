@@ -36,21 +36,11 @@ main (void)
   // generate text
   std::string test_string0 = lorem_ipsum::generate_lorem_ipsum_lines (24);
 
-  auto input_ = read_string_lines (test_string0, retval);
-  std::vector<std::string> lines_;
+  auto lines_ = read_string_lines (test_string0, retval);
   /* std::future<std::vector<std::string>> lines_ = std::async
    * (std::launch::async, [&] () { */
   /*   return read_string_lines (test_string0, retval); */
   /* }); */
-
-  try
-    {
-      lines_ = input_.value ();
-    }
-  catch (const std::bad_optional_access &e)
-    {
-      std::cout << e.what () << '\n';
-    }
 
   if (not lines_.empty ())
     {
@@ -61,8 +51,7 @@ main (void)
       };
       for (auto &line : lines_)
         {
-          auto split_r_ = split (line, ' ', retval);
-          auto r_ = split_r_.value ();
+          auto r_ = split (line, ' ', retval);
           auto me = std::max_element (r_.begin (), r_.end (), f);
           if (me != r_.end ())
             {
