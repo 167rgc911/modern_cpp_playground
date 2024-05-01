@@ -1,5 +1,5 @@
 # CXX=g++-12
-CFLAGS=-g -O0 -std=c++20
+CFLAGS=-g -O0 -std=c++20 -Wall -Wextra -pedantic
 INC_PATHS=-I../src/ -I../include/ -I$(HOME)/u/include
 LIB_PATHS=-L$(HOME)/u/lib
 LIBS=-lpthread
