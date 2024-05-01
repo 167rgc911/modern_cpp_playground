@@ -77,6 +77,7 @@ read_text_file (const std::string &f, int &retval)
 
   std::vector<std::string> ov {};
 
+  // possible issue with LARGE files
   std::ifstream ifs_{ f, std::ios::ate };
   if (ifs_.is_open ())
     {
