@@ -42,5 +42,6 @@ fuzz: fuzz_readtextfile.cpp
 
 # https://github.com/google/fuzzing/blob/master/tutorial/libFuzzerTutorial.md
 # https://llvm.org/docs/LibFuzzer.html
+# https://github.com/google/fuzztest
 # https://lcamtuf.coredump.cx/afl/
 # https://gitlab.com/akihe/radamsa
