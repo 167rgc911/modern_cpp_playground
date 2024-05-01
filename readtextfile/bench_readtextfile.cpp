@@ -28,27 +28,43 @@ test (std::string test_string0)
 {
   int retval = 0;
 
-  const auto lines_ = read_string_lines (test_string0, retval);
+  auto input_ = read_string_lines (test_string0, retval);
+  std::vector<std::string> lines_;
 
-  std::vector<std::string> ll;
-  for (const auto &line : lines_)
+  try
     {
-      auto r_ = split (line, ' ', retval);
-      auto me = std::max_element (r_.begin (), r_.end (),
-                                  [] (std::string &s1, std::string &s2) {
-                                    return s1.length () < s2.length ();
-                                  });
-      if (me != r_.end ())
-        {
-          ll.push_back (*me);
-        }
+      lines_ = input_.value ();
+    }
+  catch (const std::bad_optional_access &e)
+    {
+      std::cout << e.what () << '\n';
     }
 
-  auto m = std::max_element (ll.begin (), ll.end (),
-                             [] (std::string &s1, std::string &s2) {
-                               return s1.length () < s2.length ();
-                             });
-  return 0;
+  if (not lines_.empty ())
+    {
+      std::vector<std::string> ll;
+      for (auto &line : lines_)
+        {
+          auto split_r_ = split (line, ' ', retval);
+          auto r_ = split_r_.value ();
+          auto me = std::max_element (r_.begin (), r_.end (),
+                                      [] (std::string &s1, std::string &s2) {
+                                        return s1.length () < s2.length ();
+                                      });
+          if (me != r_.end ())
+            {
+              ll.push_back (*me);
+              // longest word for each input line
+            }
+        }
+
+      auto m = std::max_element (ll.begin (), ll.end (),
+                                 [] (std::string &s1, std::string &s2) {
+                                   return s1.length () < s2.length ();
+                                 });
+    }
+
+  return retval;
 }
 
 static void
@@ -66,24 +82,41 @@ test_lambda (std::string test_string0)
 {
   int retval = 0;
 
-  const auto lines_ = read_string_lines (test_string0, retval);
+  auto input_ = read_string_lines (test_string0, retval);
+  std::vector<std::string> lines_;
 
-  std::vector<std::string> ll;
-  auto f = [] (std::string &s1, std::string &s2) {
-    return s1.length () < s2.length ();
-  };
-  for (const auto &line : lines_)
+  try
     {
-      auto r_ = split (line, ' ', retval);
-      auto me = std::max_element (r_.begin (), r_.end (), f);
-      if (me != r_.end ())
-        {
-          ll.push_back (*me);
-        }
+      lines_ = input_.value ();
+    }
+  catch (const std::bad_optional_access &e)
+    {
+      std::cout << e.what () << '\n';
     }
 
-  auto m = std::max_element (ll.begin (), ll.end (), f);
-  return 0;
+  if (not lines_.empty ())
+    {
+
+      std::vector<std::string> ll;
+      auto f = [] (std::string &s1, std::string &s2) {
+        return s1.length () < s2.length ();
+      };
+      for (auto &line : lines_)
+        {
+          auto split_r_ = split (line, ' ', retval);
+          auto r_ = split_r_.value ();
+          auto me = std::max_element (r_.begin (), r_.end (), f);
+          if (me != r_.end ())
+            {
+              ll.push_back (*me);
+              // longest word for each input line
+            }
+        }
+
+      auto m = std::max_element (ll.begin (), ll.end (), f);
+    }
+
+  return retval;
 }
 
 static void
