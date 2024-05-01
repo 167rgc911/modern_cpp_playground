@@ -19,6 +19,9 @@ CXXFLAGS=-g -O0 -std=c++20 -Wall -Wextra -pedantic $(INC_PATHS)
 all: test_readtextfile.cpp
 	$(CXX) $(CXXFLAGS) $? -o o/test -lpthread
 
+future: test_future_readtextfile.cpp
+	$(CXX) $(CFLAGS) $(INC_PATHS) $< -o o/future -lpthread
+
 bench: bench_readtextfile.cpp
 	$(CXX) $(CXXFLAGS) $? -o o/$@ $(LDFLAGS) $(LDLIBS)
 
