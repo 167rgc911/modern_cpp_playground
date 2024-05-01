@@ -1,12 +1,21 @@
-CXX=clang++
+# CXX=g++-12
 CFLAGS=-g -O0 -std=c++20
-INC_PATHS=-I../src/ -I../include/ -I$(HOME)/u/alpine/include
-LIB_PATHS=-L$(HOME)/u/alpine/lib
-LIBS=-lbenchmark
+INC_PATHS=-I../src/ -I../include/ -I$(HOME)/u/include
+LIB_PATHS=-L$(HOME)/u/lib
+LIBS=-lpthread
+
+CXX=clang++-18
+# CFLAGS=-g -O0 -std=c++20 -fsanitize=address
+# INC_PATHS=-I../src/ -I../include/ -I$(HOME)/u/alpine/include
+# LIB_PATHS=-L$(HOME)/u/alpine/lib
+#
+LIBS+=-lbenchmark
+
+FUZZFLAGS=-fsanitize=fuzzer
 
 
 all: test_readtextfile.cpp
-	$(CXX) $(CFLAGS) $(INC_PATHS) $< -o o/test
+	$(CXX) $(CFLAGS) $(INC_PATHS) $< -o o/test -lpthread
 
 bench: bench_readtextfile.cpp
 	$(CXX) $(CFLAGS) $(INC_PATHS) $< -o o/bench $(LIB_PATHS) $(LIBS) 
@@ -38,7 +47,7 @@ bench: bench_readtextfile.cpp
 # - result: slowdown; +30%
 
 fuzz: fuzz_readtextfile.cpp
-	$(CXX) $(CFLAGS) $(INC_PATHS) $< -o o/fuzz $(LIB_PATHS) $(LIBS)
+	$(CXX) $(CFLAGS) $(INC_PATHS) $< -o o/fuzz $(FUZZFLAGS)
 
 # https://github.com/google/fuzzing/blob/master/tutorial/libFuzzerTutorial.md
 # https://llvm.org/docs/LibFuzzer.html
