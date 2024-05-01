@@ -1,24 +1,26 @@
-# CXX=g++-12
-CFLAGS=-g -O0 -std=c++20 -Wall -Wextra -pedantic
-INC_PATHS=-I../src/ -I../include/ -I$(HOME)/u/include
-LIB_PATHS=-L$(HOME)/u/lib
-LIBS=-lpthread
 
-CXX=clang++-18
-# CFLAGS=-g -O0 -std=c++20 -fsanitize=address
+# CXX=g++-12
+CLANGV=-18
+CXX=clang++$(CLANGV)
+
+
+INC_PATHS=-I../src/ -I../include/ -I$(HOME)/u/include
 # INC_PATHS=-I../src/ -I../include/ -I$(HOME)/u/alpine/include
-# LIB_PATHS=-L$(HOME)/u/alpine/lib
-#
-LIBS+=-lbenchmark
+LDFLAGS=-L$(HOME)/u/lib
+# LDFLAGS=-L$(HOME)/u/alpine/lib
+LDLIBS=-lpthread
+LDLIBS+=-lbenchmark
 
 FUZZFLAGS=-fsanitize=fuzzer
 
+CXXFLAGS=-g -O0 -std=c++20 -Wall -Wextra -pedantic $(INC_PATHS)
+
 
 all: test_readtextfile.cpp
-	$(CXX) $(CFLAGS) $(INC_PATHS) $< -o o/test -lpthread
+	$(CXX) $(CXXFLAGS) $? -o o/test -lpthread
 
 bench: bench_readtextfile.cpp
-	$(CXX) $(CFLAGS) $(INC_PATHS) $< -o o/bench $(LIB_PATHS) $(LIBS) 
+	$(CXX) $(CXXFLAGS) $? -o o/$@ $(LDFLAGS) $(LDLIBS)
 
 # -- perfon  -> doas cpupower frequency-set --governor performance
 # -- perfoff -> doas cpupower frequency-set --governor schedutil
@@ -47,10 +49,18 @@ bench: bench_readtextfile.cpp
 # - result: slowdown; +30%
 
 fuzz: fuzz_readtextfile.cpp
-	$(CXX) $(CFLAGS) $(INC_PATHS) $< -o o/fuzz $(FUZZFLAGS)
+	$(CXX) $(CXXFLAGS) $? -o o/fuzz $(FUZZFLAGS)
 
 # https://github.com/google/fuzzing/blob/master/tutorial/libFuzzerTutorial.md
 # https://llvm.org/docs/LibFuzzer.html
 # https://github.com/google/fuzztest
 # https://lcamtuf.coredump.cx/afl/
 # https://gitlab.com/akihe/radamsa
+
+fuzzcov: fuzz_readtextfile.cpp
+	$(CXX) $(CXXFLAGS) -fprofile-instr-generate -fcoverage-mapping $? -o o/$@ $(FUZZFLAGS)
+
+# llvm-profdata-18 merge -sparse *.profraw -o default.profdata && \
+# llvm-cov-18 show o/fuzzcov -instr-profile=default.profdata -name=read_string_lines
+# llvm-profdata-18 merge -sparse *.profraw -o default.profdata && \
+# llvm-cov-18 show o/fuzzcov -instr-profile=default.profdata -name=split
