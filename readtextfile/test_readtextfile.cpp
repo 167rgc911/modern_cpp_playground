@@ -58,7 +58,7 @@ main (void)
         }
 
       auto m = std::max_element (ll.begin (), ll.end (), f);
-      // does not account for other words
+      // does not account for other words with the same max length
       if (m != ll.end ())
         {
           std::cout << "longest word: " << *m << '\n';
