@@ -55,6 +55,10 @@ main (void)
             }
         }
 
+      // sort and remove dupes
+      std::sort (ll.begin (), ll.end ());
+      ll.erase (std::unique (ll.begin (), ll.end ()), ll.end ());
+
       auto m = std::max_element (ll.begin (), ll.end (), f);
       // does not account for other words with the same max length
       if (m != ll.end ())
