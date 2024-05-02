@@ -55,8 +55,7 @@ main (void)
             }
         }
 
-      // sort and remove dupes
-      std::sort (ll.begin (), ll.end ());
+      // remove dupes
       ll.erase (std::unique (ll.begin (), ll.end ()), ll.end ());
 
       auto m = std::max_element (ll.begin (), ll.end (), f);
