@@ -49,7 +49,7 @@ bench: bench_readtextfile.cpp
 # - result: slowdown; +30%
 
 fuzz: fuzz_readtextfile.cpp
-	$(CXX) $(CXXFLAGS) $? -o o/fuzz $(FUZZFLAGS)
+	$(CXX) $(CXXFLAGS) $? -o o/$@ $(FUZZFLAGS)
 
 # https://github.com/google/fuzzing/blob/master/tutorial/libFuzzerTutorial.md
 # https://llvm.org/docs/LibFuzzer.html
