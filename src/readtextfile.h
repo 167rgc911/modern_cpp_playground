@@ -51,7 +51,7 @@ read_string_lines (std::string &s, int &retval)
   if (not s.empty ())
     {
       auto pl_sanitize = [] (unsigned char c) {
-        return (c > 255) or std::ispunct (c)
+        return std::ispunct (c)
                or not(std::isalnum (c) or std::isspace (c));
       };
 
