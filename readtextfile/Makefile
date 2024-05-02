@@ -20,7 +20,7 @@ all: test_readtextfile.cpp
 	$(CXX) $(CXXFLAGS) $? -o o/test -lpthread
 
 future: test_future_readtextfile.cpp
-	$(CXX) $(CFLAGS) $(INC_PATHS) $< -o o/future -lpthread
+	$(CXX) $(CXXFLAGS) $? -o o/$@ -lpthread
 
 bench: bench_readtextfile.cpp
 	$(CXX) $(CXXFLAGS) $? -o o/$@ $(LDFLAGS) $(LDLIBS)
