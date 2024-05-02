@@ -33,7 +33,7 @@ main (void)
 {
   int retval = 0;
 
-  // generate text
+  // generate text; 24 doesn't mean 24 lines with '\n'
   auto test_string0 = lorem_ipsum::generate_lorem_ipsum_lines (24);
 
   auto lines_ = read_string_lines (test_string0, retval);
