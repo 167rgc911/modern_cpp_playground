@@ -37,10 +37,6 @@ main (void)
   auto test_string0 = lorem_ipsum::generate_lorem_ipsum_lines (24);
 
   auto lines_ = read_string_lines (test_string0, retval);
-  /* std::future<std::vector<std::string>> lines_ = std::async
-   * (std::launch::async, [&] () { */
-  /*   return read_string_lines (test_string0, retval); */
-  /* }); */
 
   if (not lines_.empty ())
     {
