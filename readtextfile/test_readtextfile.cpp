@@ -52,8 +52,6 @@ main (void)
           if (me != r_.end ())
             {
               ll.push_back (*me);
-              // longest word for each input line
-              std::cout << *me << '\n';
             }
         }
 
