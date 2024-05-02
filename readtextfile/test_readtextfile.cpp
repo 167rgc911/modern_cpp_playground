@@ -34,7 +34,7 @@ main (void)
   int retval = 0;
 
   // generate text
-  std::string test_string0 = lorem_ipsum::generate_lorem_ipsum_lines (24);
+  auto test_string0 = lorem_ipsum::generate_lorem_ipsum_lines (24);
 
   auto lines_ = read_string_lines (test_string0, retval);
   /* std::future<std::vector<std::string>> lines_ = std::async
