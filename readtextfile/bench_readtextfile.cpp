@@ -24,6 +24,32 @@
 #include "benchmark/benchmark.h"
 #include "readtextfile.h"
 
+std::string
+read_file (const std::string &f)
+{
+  // possible issue with LARGE files
+  std::ifstream ifs_{ f, std::ios::ate };
+  if (ifs_.is_open ())
+    {
+      auto sz_ = ifs_.tellg ();
+      ifs_.seekg (0, std::ios::beg);
+      /* std::cout << '\t' << sz_ << '\n'; */
+
+      std::string s_ (sz_, '\0');
+      ifs_.read (&s_[0], sz_);
+
+      return s_;
+    }
+  else
+    {
+      std::cout << " XXX ifs_.is_open()" << f << '\n';
+    }
+
+  ifs_.close ();
+
+  return {};
+}
+
 int
 test (std::string test_string0)
 {
@@ -210,5 +236,35 @@ BM_test_ranges2 (benchmark::State &state)
 }
 
 BENCHMARK (BM_test_ranges2);
+
+static void
+BM_bigdata_test1 (benchmark::State &state)
+{
+  std::string test_string0 = read_file ("pg28233.txt");
+  for (auto _ : state)
+    test (test_string0);
+}
+
+BENCHMARK (BM_bigdata_test1);
+
+static void
+BM_bigdata_test2 (benchmark::State &state)
+{
+  std::string test_string0 = read_file ("pg28233.txt");
+  for (auto _ : state)
+    test_ranges (test_string0);
+}
+
+BENCHMARK (BM_bigdata_test2);
+
+static void
+BM_bigdata_test3 (benchmark::State &state)
+{
+  std::string test_string0 = read_file ("pg28233.txt");
+  for (auto _ : state)
+    test_ranges2 (test_string0);
+}
+
+BENCHMARK (BM_bigdata_test3);
 
 BENCHMARK_MAIN ();
