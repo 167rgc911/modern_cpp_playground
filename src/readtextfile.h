@@ -55,7 +55,8 @@ read_string_lines (std::string &s, int &retval)
       };
 
       // sanitize
-      s.erase (std::remove_if (s.begin (), s.end (), pl_sanitize), s.end ());
+      auto [srf, srl] = std::ranges::remove_if (s, pl_sanitize);
+      s.erase (srf, srl);
       if (s.empty ())
         {
           retval = 1;
