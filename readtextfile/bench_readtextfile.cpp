@@ -141,8 +141,8 @@ test_ranges (std::string test_string0)
         {
           auto lw_sz = m->length ();
           // get a view that contains strings with max length
-          auto lw_vw = std::views::filter(ll,
-              [lw_sz] (std::string s) { return s.length () == lw_sz; });
+          auto lw_vw = std::views::filter (
+              ll, [lw_sz] (std::string s) { return s.length () == lw_sz; });
         }
     }
 

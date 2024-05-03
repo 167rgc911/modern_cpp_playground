@@ -29,7 +29,7 @@
 #include "readtextfile.h"
 
 std::vector<std::string>
-get_lines(int &retval)
+get_lines (int &retval)
 {
   retval = 0;
   // generate text; note that not all 24 lines/rows end with '\n'
@@ -42,10 +42,8 @@ main (void)
 {
   int retval = 0;
 
-  std::future<std::vector<std::string>> lines_
-      = std::async (std::launch::async, [&] () {
-          return get_lines (retval);
-        });
+  std::future<std::vector<std::string> > lines_
+      = std::async (std::launch::async, [&] () { return get_lines (retval); });
 
   std::vector<std::string> ll;
   auto f = [] (std::string &s1, std::string &s2) {

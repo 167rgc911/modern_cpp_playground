@@ -31,7 +31,7 @@ split (std::string &s, const char delim, int &retval)
 {
   retval = 0;
 
-  std::vector<std::string> ov {};
+  std::vector<std::string> ov{};
 
   std::istringstream ss_ (s);
   for (std::string l; std::getline (ss_, l, delim);)
@@ -51,8 +51,7 @@ read_string_lines (std::string &s, int &retval)
   if (not s.empty ())
     {
       auto pl_sanitize = [] (unsigned char c) {
-        return std::ispunct (c)
-               or not(std::isalnum (c) or std::isspace (c));
+        return std::ispunct (c) or not(std::isalnum (c) or std::isspace (c));
       };
 
       // sanitize
@@ -65,7 +64,7 @@ read_string_lines (std::string &s, int &retval)
 
       // normalize to all ASCII lowercase
       std::transform (s.begin (), s.end (), s.begin (),
-          [](unsigned char c) { return std::tolower(c); });
+                      [] (unsigned char c) { return std::tolower (c); });
 
       return split (s, '\n', retval);
     }
@@ -79,7 +78,7 @@ read_text_file (const std::string &f, int &retval)
 {
   retval = 0;
 
-  std::vector<std::string> ov {};
+  std::vector<std::string> ov{};
 
   // possible issue with LARGE files
   std::ifstream ifs_{ f, std::ios::ate };
