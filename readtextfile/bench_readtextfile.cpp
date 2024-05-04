@@ -10,7 +10,7 @@
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  rgc (),
+ *         Author:  rgc (), sessyargc.jp@gmail.com
  *   Organization:
  *
  * SPDX-License-Identifier: MIT
