@@ -63,7 +63,8 @@ main (void)
         }
 
       // remove dupes
-      ll.erase (std::unique (ll.begin (), ll.end ()), ll.end ());
+      auto [srf, srl] = std::ranges::unique (ll.begin (), ll.end ());
+      ll.erase (srf, srl);
 
       // get the longest element
       auto m = std::max_element (ll.begin (), ll.end (), f);
