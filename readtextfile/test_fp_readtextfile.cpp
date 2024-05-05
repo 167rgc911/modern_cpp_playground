@@ -29,12 +29,37 @@
 
 #include "readtextfile.h"
 
+std::string
+read_file (const std::string &f)
+{
+  // possible issue with LARGE files
+  std::ifstream ifs_{ f, std::ios::ate };
+  if (ifs_.is_open ())
+    {
+      auto sz_ = ifs_.tellg ();
+      ifs_.seekg (0, std::ios::beg);
+      /* std::cout << '\t' << sz_ << '\n'; */
+
+      std::string s_ (sz_, '\0');
+      ifs_.read (&s_[0], sz_);
+
+      return s_;
+    }
+  else
+    {
+      std::cout << " XXX ifs_.is_open()" << f << '\n';
+    }
+
+  ifs_.close ();
+
+  return {};
+}
+
 std::vector<std::string>
 get_lines (int &retval)
 {
   retval = 0;
-  // generate text; note that not all 24 lines/rows end with '\n'
-  auto test_string0 = lorem_ipsum::generate_lorem_ipsum_lines (24);
+  auto test_string0 = read_file ("pg44730.txt");
   return read_string_lines (test_string0, retval);
 }
 
@@ -43,7 +68,7 @@ main (void)
 {
   int retval = 0;
 
-  const auto lines_ = get_lines (retval);
+  auto lines_ = get_lines (retval);
 
   if (not lines_.empty ())
     {
