@@ -60,6 +60,9 @@ bench: bench_readtextfile.cpp
 fuzz: fuzz_readtextfile.cpp
 	$(CXX) $(CXXFLAGS) $? -o o/$@ $(FUZZFLAGS)
 
+fuzz_map: fuzz_map_readtextfile.cpp
+	$(CXX) $(CXXFLAGS) $? -o o/$@ $(FUZZFLAGS)
+
 # https://github.com/google/fuzzing/blob/master/tutorial/libFuzzerTutorial.md
 # https://llvm.org/docs/LibFuzzer.html
 # https://github.com/google/fuzztest
