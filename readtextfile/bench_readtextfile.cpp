@@ -267,4 +267,55 @@ BM_bigdata_test3 (benchmark::State &state)
 
 BENCHMARK (BM_bigdata_test3);
 
+int
+test_hash_ranges (std::string test_string0)
+{
+  int retval = 0;
+
+  auto lines_ = read_string_lines (test_string0, retval);
+
+  if (not lines_.empty ())
+    {
+      std::map<std::string, int> ll = split (lines_, ' ', retval);
+      auto f = [] (std::pair<const std::string, int> &s1,
+                   std::pair<const std::string, int> &s2) {
+        return s1.first.length () < s2.first.length ();
+      };
+
+      // get the longest element
+      auto m = std::max_element (ll.begin (), ll.end (), f);
+      if (m != ll.end ())
+        {
+          auto lw_sz = m->first.length ();
+          // get a view that contains strings with max length
+          auto lw_vw = std::views::filter (
+              ll, [lw_sz] (std::pair<std::string, int> h) {
+                return h.first.length () == lw_sz;
+              });
+        }
+    }
+
+  return retval;
+}
+
+static void
+BM_test_hash_ranges (benchmark::State &state)
+{
+  std::string test_string0 = lorem_ipsum::generate_lorem_ipsum_lines (24);
+  for (auto _ : state)
+    test_hash_ranges (test_string0);
+}
+
+BENCHMARK (BM_test_hash_ranges);
+
+static void
+BM_bigdata_hash_ranges (benchmark::State &state)
+{
+  std::string test_string0 = read_file ("pg28233.txt");
+  for (auto _ : state)
+    test_hash_ranges (test_string0);
+}
+
+BENCHMARK (BM_bigdata_hash_ranges);
+
 BENCHMARK_MAIN ();
