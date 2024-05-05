@@ -22,6 +22,7 @@
 #include <iostream>
 #include <map>
 #include <memory>
+#include <ranges>
 #include <string>
 #include <vector>
 
@@ -55,7 +56,17 @@ main (void)
       // does not account for other words with the same max length
       if (m != ll.end ())
         {
-          std::cout << "longest word: " << m->first << '\n';
+          auto lw_sz = m->first.length ();
+          // get a view that contains strings with max length
+          auto lw_vw = std::views::filter (
+              ll, [lw_sz] (std::pair<std::string, int> h) {
+                return h.first.length () == lw_sz;
+              });
+          for (auto lw : lw_vw)
+            {
+              std::cout << lw.first << '\n';
+            }
+
         }
     }
 
