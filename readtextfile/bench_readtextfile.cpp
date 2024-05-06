@@ -50,6 +50,36 @@ read_file (const std::string &f)
   return {};
 }
 
+std::vector<std::string>
+read_string_lines2 (std::string &s, int &retval)
+{
+  retval = 0;
+
+  if (not s.empty ())
+    {
+      auto pl_sanitize = [] (unsigned char c) {
+        return std::ispunct (c) or c == '\t' or c == '\r';
+      };
+
+      // sanitize
+      auto [srf, srl] = std::ranges::remove_if (s, pl_sanitize);
+      s.erase (srf, srl);
+      if (s.empty ())
+        {
+          retval = 1;
+          return {};
+        }
+
+      // normalize to all ASCII lowercase
+      std::transform (s.begin (), s.end (), s.begin (),
+                      [] (unsigned char c) { return std::tolower (c); });
+
+      return split (s, '\n', retval);
+    }
+  retval = 1;
+  return {};
+}
+
 int
 test (std::string test_string0)
 {
@@ -368,5 +398,51 @@ BM_bigdata_hash_ranges2 (benchmark::State &state)
 }
 
 BENCHMARK (BM_bigdata_hash_ranges2);
+
+int
+test_read_string_lines (std::string test_string0)
+{
+  int retval = 0;
+
+  auto lines_ = read_string_lines (test_string0, retval);
+  if (not lines_.empty())
+    {
+    }
+
+  return retval;
+}
+
+static void
+BM_read_string_lines (benchmark::State &state)
+{
+  std::string test_string0 = read_file ("pg28233.txt");
+  for (auto _ : state)
+    test_read_string_lines (test_string0);
+}
+
+BENCHMARK (BM_read_string_lines);
+
+int
+test_read_string_lines2 (std::string test_string0)
+{
+  int retval = 0;
+
+  auto lines_ = read_string_lines2 (test_string0, retval);
+  if (not lines_.empty())
+    {
+    }
+
+  return retval;
+}
+
+static void
+BM_read_string_lines2 (benchmark::State &state)
+{
+  std::string test_string0 = read_file ("pg28233.txt");
+  for (auto _ : state)
+    test_read_string_lines2 (test_string0);
+}
+
+BENCHMARK (BM_read_string_lines2);
 
 BENCHMARK_MAIN ();
