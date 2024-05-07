@@ -298,7 +298,7 @@ BM_bigdata_test3 (benchmark::State &state)
 BENCHMARK (BM_bigdata_test3);
 
 int
-test_hash_ranges (std::string test_string0)
+test_map_ranges (std::string test_string0)
 {
   int retval = 0;
 
@@ -329,27 +329,27 @@ test_hash_ranges (std::string test_string0)
 }
 
 static void
-BM_test_hash_ranges (benchmark::State &state)
+BM_test_map_ranges (benchmark::State &state)
 {
   std::string test_string0 = lorem_ipsum::generate_lorem_ipsum_lines (24);
   for (auto _ : state)
-    test_hash_ranges (test_string0);
+    test_map_ranges (test_string0);
 }
 
-BENCHMARK (BM_test_hash_ranges);
+BENCHMARK (BM_test_map_ranges);
 
 static void
-BM_bigdata_hash_ranges (benchmark::State &state)
+BM_bigdata_map_ranges (benchmark::State &state)
 {
   std::string test_string0 = read_file ("pg28233.txt");
   for (auto _ : state)
-    test_hash_ranges (test_string0);
+    test_map_ranges (test_string0);
 }
 
-BENCHMARK (BM_bigdata_hash_ranges);
+BENCHMARK (BM_bigdata_map_ranges);
 
 int
-test_hash_ranges2 (std::string test_string0)
+test_map_ranges2 (std::string test_string0)
 {
   int retval = 0;
 
@@ -380,24 +380,24 @@ test_hash_ranges2 (std::string test_string0)
 }
 
 static void
-BM_test_hash_ranges2 (benchmark::State &state)
+BM_test_map_ranges2 (benchmark::State &state)
 {
   std::string test_string0 = lorem_ipsum::generate_lorem_ipsum_lines (24);
   for (auto _ : state)
-    test_hash_ranges2 (test_string0);
+    test_map_ranges2 (test_string0);
 }
 
-BENCHMARK (BM_test_hash_ranges2);
+BENCHMARK (BM_test_map_ranges2);
 
 static void
-BM_bigdata_hash_ranges2 (benchmark::State &state)
+BM_bigdata_map_ranges2 (benchmark::State &state)
 {
   std::string test_string0 = read_file ("pg28233.txt");
   for (auto _ : state)
-    test_hash_ranges2 (test_string0);
+    test_map_ranges2 (test_string0);
 }
 
-BENCHMARK (BM_bigdata_hash_ranges2);
+BENCHMARK (BM_bigdata_map_ranges2);
 
 int
 test_read_string_lines (std::string test_string0)
