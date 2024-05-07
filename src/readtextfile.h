@@ -25,7 +25,28 @@
 #include <sstream>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
+
+std::unordered_set<std::string>
+split_s (std::vector<std::string> &s, const char delim, int &retval)
+{
+  retval = 0;
+
+  std::unordered_set<std::string> ov{};
+
+  for (std::string l : s)
+    {
+      std::istringstream ss_ (l);
+      for (std::string w; std::getline (ss_, w, delim);)
+        {
+          ov.emplace (w);
+        }
+    }
+  /* std::cout << ov.size() << '\n'; */
+
+  return ov;
+}
 
 std::unordered_map<std::string, int>
 split_u (std::vector<std::string> &s, const char delim, int &retval)

@@ -445,4 +445,55 @@ BM_read_string_lines2 (benchmark::State &state)
 
 BENCHMARK (BM_read_string_lines2);
 
+int
+test_set_ranges (std::string test_string0)
+{
+  int retval = 0;
+
+  auto lines_ = read_string_lines (test_string0, retval);
+
+  if (not lines_.empty ())
+    {
+      std::unordered_set<std::string> ll = split_s (lines_, ' ', retval);
+      auto f = [] (const std::string &s1,
+                   const std::string &s2) {
+        return s1.length () < s2.length ();
+      };
+
+      // get the longest element
+      auto m = std::max_element (ll.begin (), ll.end (), f);
+      if (m != ll.end ())
+        {
+          auto lw_sz = m->length ();
+          // get a view that contains strings with max length
+          auto lw_vw = std::views::filter (
+              ll, [lw_sz] (std::string h) {
+                return h.length () == lw_sz;
+              });
+        }
+    }
+
+  return retval;
+}
+
+static void
+BM_test_set_ranges (benchmark::State &state)
+{
+  std::string test_string0 = lorem_ipsum::generate_lorem_ipsum_lines (24);
+  for (auto _ : state)
+    test_set_ranges (test_string0);
+}
+
+BENCHMARK (BM_test_set_ranges);
+
+static void
+BM_bigdata_set_ranges (benchmark::State &state)
+{
+  std::string test_string0 = read_file ("pg28233.txt");
+  for (auto _ : state)
+    test_set_ranges (test_string0);
+}
+
+BENCHMARK (BM_bigdata_set_ranges);
+
 BENCHMARK_MAIN ();
