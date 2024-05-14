@@ -23,11 +23,27 @@
 #define MAX_CHARS 1024
 const int NUM_WORDS = 10;
 
+/*
+IMPL_1 uses an array of struct. the newly defined struct stores the length of
+the word as well as the word itself, this prevents multiple strlen() API calls
+but storage use +40bytes (sizeof(int) * NUM_WORDS)
+
+IMPL_2 uses a straight array. calls strlen() many times in the insertion loop.
+no storage tradeoff .. but might have a speed performance tradeoff depends
+if a pointer access is faster than an inline fn call (assumes strlen() is
+inlined)
+ */
+
+#define IMPL_1
+/* #undef IMPL_1 */
+
+#ifdef IMPL_1
 typedef struct
 {
   int len;
   char str[MAX_CHARS];
 } word_t;
+#endif
 
 int
 main (int argc, char *argv[])
@@ -45,24 +61,39 @@ main (int argc, char *argv[])
       return EXIT_FAILURE;
     }
 
-  /* no dynamic memory allocations */
+    /* no dynamic memory allocations */
+#ifdef IMPL_1
   word_t longest_words[NUM_WORDS];
   memset (longest_words, 0, sizeof (longest_words));
+#else
+  char longest_words[NUM_WORDS][MAX_CHARS];
+  memset (longest_words, 0, sizeof (longest_words));
+#endif
 
   char buf[MAX_CHARS];
   while (fgets (buf, sizeof (buf), fp) != NULL)
     {
+#ifdef IMPL_1
       int len = strlen (buf);
+#else
+      unsigned int len = strlen (buf);
+#endif
       for (int i = 0; i < NUM_WORDS; ++i)
         {
+#ifdef IMPL_1
           if (longest_words[i].len < len)
             {
               memcpy (longest_words[i].str, buf, len);
-              /* store string length; prevent calling strlen() multiple times */
               longest_words[i].len = len;
-              /* tradeoff: or save space; and call strlen() multiple times */
               break;
             }
+#else
+          if (strlen (longest_words[i]) < len)
+            {
+              memcpy (longest_words[i], buf, len);
+              break;
+            }
+#endif
         }
       /* pedantic */
       memset (buf, 0, MAX_CHARS);
@@ -70,7 +101,11 @@ main (int argc, char *argv[])
 
   for (int i = 0; i < NUM_WORDS; ++i)
     {
+#ifdef IMPL_1
       fprintf (stdout, "%s", longest_words[i].str);
+#else
+      fprintf (stdout, "%s", longest_words[i]);
+#endif
     }
 
   return EXIT_SUCCESS;
