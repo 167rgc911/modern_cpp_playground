@@ -29,11 +29,6 @@ typedef struct
   char str[MAX_CHARS];
 } word_t;
 
-void
-bubble_sort (word_t *w)
-{
-}
-
 int
 main (int argc, char *argv[])
 {
@@ -50,6 +45,7 @@ main (int argc, char *argv[])
       return EXIT_FAILURE;
     }
 
+  /* no dynamic memory allocations */
   word_t longest_words[NUM_WORDS];
   memset (longest_words, 0, sizeof (longest_words));
 
@@ -57,24 +53,24 @@ main (int argc, char *argv[])
   while (fgets (buf, sizeof (buf), fp) != NULL)
     {
       int len = strlen (buf);
-      for (int i = 0; i < NUM_WORDS; i++)
+      for (int i = 0; i < NUM_WORDS; ++i)
         {
-          if (longest_words[i].len == 0)
+          if (longest_words[i].len < len)
             {
               memcpy (longest_words[i].str, buf, len);
+              /* store string length; prevent calling strlen() multiple times */
               longest_words[i].len = len;
+              /* tradeoff: or save space; and call strlen() multiple times */
               break;
             }
         }
-      for (int i = 0; i < NUM_WORDS; i++)
-        {
-          if (w[i].len > w[i + 1].len)
-            {
-              word_t tmp = w[i];
-              w[i] = w[i + 1];
-              w[i + 1] = tmp;
-            }
-        }
+      /* pedantic */
+      memset (buf, 0, MAX_CHARS);
+    }
+
+  for (int i = 0; i < NUM_WORDS; ++i)
+    {
+      fprintf (stdout, "%s", longest_words[i].str);
     }
 
   return EXIT_SUCCESS;
