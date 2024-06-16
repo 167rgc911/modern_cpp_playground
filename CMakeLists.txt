@@ -7,6 +7,10 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_CXX_EXTENSIONS NO)
 
+option(CODECOV "Enable code coverage" OFF)
+include(CMakePrintHelpers)
+cmake_print_variables(CODECOV)
+
 # disable when using the full plethora of sanitizer options below
 # set(CMAKE_CXX_CLANG_TIDY clang-tidy;-header-filter=.;-checks=-*,modernize-*)
 
@@ -47,6 +51,13 @@ add_link_options(
 add_compile_options(
     "-Wall" "-Wpedantic" "-Wextra" "-fexceptions"
     "$<$<CONFIG:DEBUG>:-fno-omit-frame-pointer;-O0;-g3>"
+)
+
+add_compile_options(
+  "$<$<BOOL:CODECOV>:-fprofile-arcs;-ftest-coverage>"
+)
+add_link_options(
+  "$<$<BOOL:CODECOV>:-lgcov;--coverage>"
 )
 
 # use Release build!
