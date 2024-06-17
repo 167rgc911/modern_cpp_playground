@@ -7,6 +7,8 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_CXX_EXTENSIONS NO)
 
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake_modules")
+
 option(CODECOV "Enable code coverage" OFF)
 include(CMakePrintHelpers)
 cmake_print_variables(CODECOV)
@@ -54,11 +56,13 @@ add_compile_options(
 )
 
 add_compile_options(
-  "$<$<BOOL:CODECOV>:-fprofile-arcs;-ftest-coverage>"
+  "$<$<BOOL:CODECOV>:-O0;-g;-fprofile-arcs;-ftest-coverage>"
 )
 add_link_options(
   "$<$<BOOL:CODECOV>:-lgcov;--coverage>"
 )
+include(CodeCoverage)
+APPEND_COVERAGE_COMPILER_FLAGS()
 
 # use Release build!
 find_program(MEMORYCHECK_COMMAND valgrind)
