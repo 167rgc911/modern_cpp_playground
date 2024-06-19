@@ -55,14 +55,8 @@ add_compile_options(
     "$<$<CONFIG:DEBUG>:-fno-omit-frame-pointer;-O0;-g3>"
 )
 
-add_compile_options(
-  "$<$<BOOL:CODECOV>:-O0;-g;-fprofile-arcs;-ftest-coverage>"
-)
-add_link_options(
-  "$<$<BOOL:CODECOV>:-lgcov;--coverage>"
-)
 include(CodeCoverage)
-APPEND_COVERAGE_COMPILER_FLAGS()
+append_coverage_compiler_flags()
 
 # use Release build!
 find_program(MEMORYCHECK_COMMAND valgrind)
@@ -100,29 +94,33 @@ target_sources(
     ${cppfront_SOURCE_DIR}/source/reflect.h
     ${cppfront_SOURCE_DIR}/source/sema.h
 )
-FetchContent_Declare(
-  googletest
-  GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG        f8d7d77c06936315286eb55f8de22cd23c188571 # release-1.14.0
-  OVERRIDE_FIND_PACKAGE
-)
-FetchContent_Declare(
-  googlebenchmark
-  GIT_REPOSITORY https://github.com/google/benchmark.git
-  GIT_TAG        344117638c8ff7e239044fd0fa7085839fc03021 # release-1.8.3
-  OVERRIDE_FIND_PACKAGE
-)
-FetchContent_Declare(
-  Catch2
-  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-  GIT_TAG        8ac8190e494a381072c89f5e161b92a08d98b37b # v3.5.3
-  OVERRIDE_FIND_PACKAGE
-)
-find_package(googletest)
-find_package(googlebenchmark)
-find_package(Catch2)
+# FetchContent_Declare(
+#   googletest
+#   GIT_REPOSITORY https://github.com/google/googletest.git
+#   GIT_TAG        f8d7d77c06936315286eb55f8de22cd23c188571 # release-1.14.0
+#   OVERRIDE_FIND_PACKAGE
+# )
+# FetchContent_Declare(
+#   googlebenchmark
+#   GIT_REPOSITORY https://github.com/google/benchmark.git
+#   GIT_TAG        344117638c8ff7e239044fd0fa7085839fc03021 # release-1.8.3
+#   OVERRIDE_FIND_PACKAGE
+# )
+# FetchContent_Declare(
+#   Catch2
+#   GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+#   GIT_TAG        8ac8190e494a381072c89f5e161b92a08d98b37b # v3.5.3
+#   OVERRIDE_FIND_PACKAGE
+# )
+# find_package(googletest)
+# find_package(googlebenchmark)
+# find_package(Catch2)
+find_package(benchmark)
+
+set(COVERAGE_LCOV_EXCLUDES 'cppfront/*' '_deps/*')
 
 include_directories(include)
+include_directories($ENV{HOME}/u/include)
 include_directories(${cppfront_SOURCE_DIR}/include)
 
 add_subdirectory(src)

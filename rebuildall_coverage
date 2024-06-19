@@ -1,1 +1,1 @@
-rm -rf coverage && CC=gcc CXX=g++ cmake -S . -B coverage -DCODECOV=ON && cd coverage && make && make test && ctest -T coverage
+rm -rf coverage && CC=gcc CXX=g++ cmake -S . -B coverage -DCODECOV=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MODULE_PATH=${HOME}/u/lib/cmake && cd coverage && make && make test && ctest -T coverage
